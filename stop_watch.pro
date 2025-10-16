@@ -6,6 +6,7 @@ QT += quick
 
 SOURCES += \
         main.cpp \
+        sourceprovider.cpp \
         watchtimer.cpp
 
 RESOURCES += qml.qrc
@@ -22,4 +23,5 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    watchtimer.h
+    sourceprovider.h \
+    watchtimer.h 
