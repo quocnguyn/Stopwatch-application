@@ -1,0 +1,7 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>WatchButton.qml</file>
+        <file>LapElement.qml</file>
+    </qresource>
+</RCC>
