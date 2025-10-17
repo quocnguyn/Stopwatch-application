@@ -14,33 +14,46 @@ Item {
     Button {
         id: buttonModel
 
-        contentItem: Row {
-            id: contentRow
+        contentItem: Column {
+            id: contentColumn
             spacing: 8
-            anchors.centerIn: parent
+            anchors {
+                fill: parent
+                centerIn: parent
+                margins: 7
+            }
 
             Image {
                 id: buttonIcon
-                source: ""
                 width: visible ? iconSize : 0
+                source: ""
                 height: iconSize
                 fillMode: Image.PreserveAspectFit
                 smooth: true
+                anchors {
+                    horizontalCenter: parent.horizontalCenter
+                }
             }
 
             Text {
                 id: buttonTitle
+                text: ""
+                width: 55
                 font { pointSize: 16 }
-                verticalAlignment: Text.AlignVCenter
+                horizontalAlignment: Text.AlignHCenter
             }
         }
 
         background: Rectangle {
             id: buttonContainer
-            width: buttonModel.contentItem.implicitWidth + 15
-            height: buttonModel.contentItem.implicitHeight + 15
+            width: buttonModel.contentColumn.implicitWidth
+            height: buttonModel.contentColumn.implicitHeight
             radius: 6
             border { width: 2 }
+            anchors {
+                centerIn: parent
+            }
+
             color: buttonModel.down ? "lightgrey" : "white"
         }
 

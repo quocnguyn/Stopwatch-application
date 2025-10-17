@@ -7,12 +7,8 @@ import MyType.WatchTimer 1.0
 Window {
     id: root
     width: 640
-    height: 480
+    height: 640
     visible: true
-
-    property int milisecond: 0
-    property int second: 0
-    property int minute: 0
 
     WatchTimer {
         id: timer
@@ -28,7 +24,7 @@ Window {
 
         Rectangle {
             id: watchContainer
-            width: 400
+            width: 450
             height: 270
             color: "beige"
             border { width: 2 }
@@ -52,10 +48,11 @@ Window {
 
             Rectangle {
                 id: screen
-                width: watchContainer.implicitWidth + 20
-                height: time.implicitHeight + 20
+                width: watchContainer.implicitWidth
+                height: time.implicitHeight
                 color: "#A4E64E"
                 border { width: 2 }
+
                 radius: 20
                 Text {
                     id: time; color: "#331875"
@@ -64,12 +61,10 @@ Window {
                     anchors { centerIn: parent }
                 }
                 anchors {
-                    topMargin: 40
-                    leftMargin: 30
-                    rightMargin: 30
-                    top: watchTitle.bottom
-                    left: watchContainer.left
-                    right: watchContainer.right
+                    topMargin: 40; top: watchTitle.bottom
+                    leftMargin: 30; left: watchContainer.left
+                    rightMargin: 30; right: watchContainer.right
+
                 }
             }
 
@@ -82,11 +77,19 @@ Window {
 
                 WatchButton {
                     title: "Start"
+                    iconSource: SourceProvider.start
                     onButtonClicked: { timer.start() }
                 }
 
                 WatchButton {
+                    title: "Stop"
+                    iconSource: SourceProvider.stop
+                    onButtonClicked: { timer.stop() }
+                }
+
+                WatchButton {
                     title: "Lap"
+                    iconSource: SourceProvider.lap
                     onButtonClicked: {
                         if(!timer.running) { return; }
                         myModel.insert(0, {
@@ -98,12 +101,8 @@ Window {
                 }
 
                 WatchButton {
-                    title: "Stop"
-                    onButtonClicked: { timer.stop() }
-                }
-
-                WatchButton {
                     title: "Reset"
+                    iconSource: SourceProvider.reset
                     onButtonClicked: {
                         timer.reset()
                         myModel.clear()
@@ -120,8 +119,7 @@ Window {
             border { width: 2 }
             anchors {
                 horizontalCenter: parent.horizontalCenter
-                top: watchContainer.bottom
-                topMargin: 30
+                top: watchContainer.bottom; topMargin: 30
             }
 
             ListView {

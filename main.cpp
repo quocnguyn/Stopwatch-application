@@ -3,6 +3,7 @@
 #include <QQmlContext>
 #include <watchtimer.h>
 #include <QtWidgets/QListView>
+#include <sourceprovider.h>
 
 int main(int argc, char *argv[])
 {
@@ -12,9 +13,11 @@ int main(int argc, char *argv[])
     QGuiApplication app(argc, argv);
 
     QQmlApplicationEngine engine;
+    SourceProvider source_provider;
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     qmlRegisterType<WatchTimer>("MyType.WatchTimer", 1, 0, "WatchTimer");
+    engine.rootContext()->setContextProperty("SourceProvider", &source_provider);
     QObject::connect(
         &engine,
         &QQmlApplicationEngine::objectCreated,
