@@ -53,11 +53,17 @@ OBJECTS_DIR   = ./
 ####### Files
 
 SOURCES       = ../../main.cpp \
+		../../sourceprovider.cpp \
 		../../watchtimer.cpp qrc_qml.cpp \
+		qrc_iconsrc.cpp \
+		moc_sourceprovider.cpp \
 		moc_watchtimer.cpp
 OBJECTS       = main.o \
+		sourceprovider.o \
 		watchtimer.o \
 		qrc_qml.o \
+		qrc_iconsrc.o \
+		moc_sourceprovider.o \
 		moc_watchtimer.o
 DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf \
@@ -141,7 +147,9 @@ DIST          = /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/exceptions.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
-		../../../../stop_watch.pro ../../watchtimer.h ../../main.cpp \
+		../../../../stop_watch.pro ../../sourceprovider.h \
+		../../watchtimer.h ../../main.cpp \
+		../../sourceprovider.cpp \
 		../../watchtimer.cpp
 QMAKE_TARGET  = stop_watch
 DESTDIR       = 
@@ -237,7 +245,8 @@ Makefile: ../../stop_watch.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-clang
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/yacc.prf \
 		/usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf \
 		../../stop_watch.pro \
-		../../qml.qrc
+		../../qml.qrc \
+		../../iconsrc.qrc
 	$(QMAKE) -o Makefile ../../stop_watch.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/spec_pre.prf:
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/common/unix.conf:
@@ -323,6 +332,7 @@ Makefile: ../../stop_watch.pro /usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-clang
 /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/lex.prf:
 ../../stop_watch.pro:
 ../../qml.qrc:
+../../iconsrc.qrc:
 qmake: FORCE
 	@$(QMAKE) -o Makefile ../../stop_watch.pro -spec linux-clang CONFIG+=debug CONFIG+=qml_debug
 
@@ -337,10 +347,10 @@ dist: distdir FORCE
 distdir: FORCE
 	@test -d $(DISTDIR) || mkdir -p $(DISTDIR)
 	$(COPY_FILE) --parents $(DIST) $(DISTDIR)/
-	$(COPY_FILE) --parents ../../qml.qrc $(DISTDIR)/
+	$(COPY_FILE) --parents ../../qml.qrc ../../iconsrc.qrc $(DISTDIR)/
 	$(COPY_FILE) --parents /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp $(DISTDIR)/
-	$(COPY_FILE) --parents ../../watchtimer.h $(DISTDIR)/
-	$(COPY_FILE) --parents ../../main.cpp ../../watchtimer.cpp $(DISTDIR)/
+	$(COPY_FILE) --parents ../../sourceprovider.h ../../watchtimer.h $(DISTDIR)/
+	$(COPY_FILE) --parents ../../main.cpp ../../sourceprovider.cpp ../../watchtimer.cpp $(DISTDIR)/
 
 
 clean: compiler_clean 
@@ -364,9 +374,9 @@ check: first
 
 benchmark: first
 
-compiler_rcc_make_all: qrc_qml.cpp
+compiler_rcc_make_all: qrc_qml.cpp qrc_iconsrc.cpp
 compiler_rcc_clean:
-	-$(DEL_FILE) qrc_qml.cpp
+	-$(DEL_FILE) qrc_qml.cpp qrc_iconsrc.cpp
 qrc_qml.cpp: ../../qml.qrc \
 		/usr/lib/qt5/bin/rcc \
 		../../LapElement.qml \
@@ -374,15 +384,28 @@ qrc_qml.cpp: ../../qml.qrc \
 		../../WatchButton.qml
 	/usr/lib/qt5/bin/rcc -name qml ../../qml.qrc -o qrc_qml.cpp
 
+qrc_iconsrc.cpp: ../../iconsrc.qrc \
+		/usr/lib/qt5/bin/rcc \
+		../../icons/lap.svg \
+		../../icons/stop.svg \
+		../../icons/reset.svg \
+		../../icons/start.svg
+	/usr/lib/qt5/bin/rcc -name iconsrc ../../iconsrc.qrc -o qrc_iconsrc.cpp
+
 compiler_moc_predefs_make_all: moc_predefs.h
 compiler_moc_predefs_clean:
 	-$(DEL_FILE) moc_predefs.h
 moc_predefs.h: /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 	clang++ -pipe -g -Wall -Wextra -dM -E -o moc_predefs.h /usr/lib/x86_64-linux-gnu/qt5/mkspecs/features/data/dummy.cpp
 
-compiler_moc_header_make_all: moc_watchtimer.cpp
+compiler_moc_header_make_all: moc_sourceprovider.cpp moc_watchtimer.cpp
 compiler_moc_header_clean:
-	-$(DEL_FILE) moc_watchtimer.cpp
+	-$(DEL_FILE) moc_sourceprovider.cpp moc_watchtimer.cpp
+moc_sourceprovider.cpp: ../../sourceprovider.h \
+		moc_predefs.h \
+		/usr/lib/qt5/bin/moc
+	/usr/lib/qt5/bin/moc $(DEFINES) --include /home/guq3hc/Working/Qt/stop_watch/build/Desktop-Debug/moc_predefs.h -I/usr/lib/x86_64-linux-gnu/qt5/mkspecs/linux-clang -I/home/guq3hc/Working/Qt/stop_watch -I/usr/include/x86_64-linux-gnu/qt5 -I/usr/include/x86_64-linux-gnu/qt5/QtQuick -I/usr/include/x86_64-linux-gnu/qt5/QtGui -I/usr/include/x86_64-linux-gnu/qt5/QtQmlModels -I/usr/include/x86_64-linux-gnu/qt5/QtQml -I/usr/include/x86_64-linux-gnu/qt5/QtNetwork -I/usr/include/x86_64-linux-gnu/qt5/QtCore -I. -I/usr/include/c++/13 -I/usr/include/x86_64-linux-gnu/c++/13 -I/usr/include/c++/13/backward -I/usr/lib/llvm-18/lib/clang/18/include -I/usr/local/include -I/usr/include/x86_64-linux-gnu -I/usr/include ../../sourceprovider.h -o moc_sourceprovider.cpp
+
 moc_watchtimer.cpp: ../../watchtimer.h \
 		moc_predefs.h \
 		/usr/lib/qt5/bin/moc
@@ -402,14 +425,24 @@ compiler_clean: compiler_rcc_clean compiler_moc_predefs_clean compiler_moc_heade
 
 ####### Compile
 
-main.o: ../../main.cpp ../../watchtimer.h
+main.o: ../../main.cpp ../../watchtimer.h \
+		../../sourceprovider.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o main.o ../../main.cpp
+
+sourceprovider.o: ../../sourceprovider.cpp ../../sourceprovider.h
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o sourceprovider.o ../../sourceprovider.cpp
 
 watchtimer.o: ../../watchtimer.cpp ../../watchtimer.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o watchtimer.o ../../watchtimer.cpp
 
 qrc_qml.o: qrc_qml.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_qml.o qrc_qml.cpp
+
+qrc_iconsrc.o: qrc_iconsrc.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o qrc_iconsrc.o qrc_iconsrc.cpp
+
+moc_sourceprovider.o: moc_sourceprovider.cpp 
+	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_sourceprovider.o moc_sourceprovider.cpp
 
 moc_watchtimer.o: moc_watchtimer.cpp 
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o moc_watchtimer.o moc_watchtimer.cpp

@@ -3,6 +3,5 @@
         <file>main.qml</file>
         <file>WatchButton.qml</file>
         <file>LapElement.qml</file>
-        <file>iconurl.qrc</file>
     </qresource>
 </RCC>
