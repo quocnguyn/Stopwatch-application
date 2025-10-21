@@ -12,8 +12,8 @@ int main(int argc, char *argv[])
 #endif
     QGuiApplication app(argc, argv);
 
-    QQmlApplicationEngine engine;
     SourceProvider source_provider;
+    QQmlApplicationEngine engine;
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));
     qmlRegisterType<WatchTimer>("MyType.WatchTimer", 1, 0, "WatchTimer");

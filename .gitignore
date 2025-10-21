@@ -1,3 +1,5 @@
+.vscode
+
 /build/*
 
 stop_watch.pro.*

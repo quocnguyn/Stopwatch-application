@@ -1,4 +1,4 @@
-#include "watchtimer.h"
+#include <watchtimer.h>
 #include <QDebug>
 
 QString WatchTimer::formatStrTime(

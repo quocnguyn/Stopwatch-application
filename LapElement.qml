@@ -5,9 +5,6 @@ ItemDelegate {
     id: root
     width: model.width
     height: lapNumberId.height + 20
-    anchors {
-        horizontalCenter: parent.horizontalCenter
-    }
 
     background: Rectangle{
         border { width: 1 }

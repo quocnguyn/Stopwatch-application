@@ -15,12 +15,11 @@ Window {
         interval: 10;
     }
 
-    Column {
+    Rectangle {
         anchors {
             horizontalCenter: parent.horizontalCenter
             fill: parent
         }
-        spacing: 10
 
         Rectangle {
             id: watchContainer
