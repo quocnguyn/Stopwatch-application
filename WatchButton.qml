@@ -46,8 +46,6 @@ Item {
 
         background: Rectangle {
             id: buttonContainer
-            width: buttonModel.contentColumn.implicitWidth
-            height: buttonModel.contentColumn.implicitHeight
             radius: 6
             border { width: 2 }
             anchors {

@@ -17,7 +17,6 @@ WatchTimer::WatchTimer(QObject *parent)
     : QObject{parent}, timer(std::make_unique<QTimer>()),
     _minute(0), _second(0), _milisecond(0)
 {
-    this->timer->setSingleShot(false);
     connect(timer.get(), &QTimer::timeout, [this](){
         constexpr int maxMilis = 100;
         constexpr int maxSeconds = 60;
@@ -51,7 +50,11 @@ WatchTimer::WatchTimer(QObject *parent)
         this->timer->stop();
     });
 
-    this->setRunning(true);
+    this->timer->setSingleShot(false);
+    this->setRunning(false);
+    this->setTime(formatStrTime(
+        _minute, _second, _milisecond
+    ));
 }
 
 void WatchTimer::setTime(const QString &new_time) {
